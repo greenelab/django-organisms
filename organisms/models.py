@@ -16,7 +16,7 @@ class Organism(models.Model):
     # Fields marked with 'unique=True' must be unique for every entry
     # (organism) or a database exception will be raised.
     # For more information on the types of fields, see:
-    # https://docs.djangoproject.com/en/1.5/ref/models/fields/
+    # https://docs.djangoproject.com/en/dev/ref/models/fields/
     taxonomy_id = models.PositiveIntegerField(
         db_index=True, unique=True,
         help_text="Taxonomy ID assigned by NCBI")

@@ -5,8 +5,8 @@ fields specified in the Organism model (see organisms/models.py), which is the
 blueprint for what information the "organism" will contain in the database.
 The user should enter a command line script such as:
 
-  python manage.py organisms_add_organism --taxonomy_id=9606 --common_name=\
-"Human" --scientific_name="Homo sapiens"
+  python manage.py organisms_create_or_update --taxonomy_id=9606 \
+--common_name="Human" --scientific_name="Homo sapiens"
 
 which will enter the new organism "Human" into the database.
 
