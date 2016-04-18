@@ -19,7 +19,7 @@ setup(
     author='Greene Lab',
     author_email='team@greenelab.com',
     install_requires=[
-        'django == 1.8.11',
+        'django',
     ],
     classifiers=[
         'Environment :: Web Environment',
