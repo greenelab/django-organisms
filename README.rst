@@ -30,7 +30,6 @@ Quick Start
 
 2. Run ``python manage.py migrate`` command to create ``organisms`` model.
 
-
 3. **(Optional)** The following step is only needed if you have
 django-tastypie installed to create a REST API for your project and
 would like to have API endpoints for ``django-organisms``.
