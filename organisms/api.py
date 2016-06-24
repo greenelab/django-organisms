@@ -9,6 +9,7 @@ try:
     from tastypie.resources import ModelResource, ALL
 except ImportError:
     logger.info('Not using django-tastypie in organisms/api.py file')
+    quit()
 
 
 class OrganismResource(ModelResource):
