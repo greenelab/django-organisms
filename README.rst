@@ -31,6 +31,35 @@ Quick Start
 2. Run ``python manage.py migrate`` command to create ``organisms`` model.
 
 
+3. **(Optional)** The following step is only needed if you have
+django-tastypie installed to create a REST API for your project and
+would like to have API endpoints for ``django-organisms``.
+
+Add the following to your project's ``urls.py`` file:
+
+::
+
+   # There are probably already other imports here, such as:
+   # from django.conf.urls import url, patterns, include
+
+   # If you have not already done so, import the tastypie API:
+   from tastypie.api import Api
+
+   # Import the OrganismResource:
+   from organisms.api import OrganismResource
+
+   # If you have not already done so, initialize your API and
+   # add the OrganismResource to it
+   v0_api = Api()
+   v0_api.register(OrganismResource())
+
+   # In the urlpatterns, include the urls for this api:
+   urlpatterns = patterns('',
+       ...
+       (r'^api/', include(v0_api.urls))
+   )
+
+
 Usage of Management Command
 ---------------------------
 
