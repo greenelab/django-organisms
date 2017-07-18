@@ -9,13 +9,13 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-organisms',
-    version='0.4',
+    version='0.5',
     packages=find_packages(),
     include_package_data=True,
     license='LICENSE.txt',
     description='A simple Django app to represent organisms.',
     long_description=README,
-    url='https://bitbucket.org/greenelab/django-organisms',
+    url='https://github.com/dongbohu/django-organisms',
     author='Greene Lab',
     author_email='team@greenelab.com',
     install_requires=[
