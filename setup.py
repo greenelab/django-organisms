@@ -15,7 +15,7 @@ setup(
     license='LICENSE.txt',
     description='A simple Django app to represent organisms.',
     long_description=README,
-    url='https://github.com/dongbohu/django-organisms',
+    url='https://github.com/greenelab/django-organisms',
     author='Greene Lab',
     author_email='team@greenelab.com',
     install_requires=[
