@@ -16,7 +16,6 @@ https://docs.djangoproject.com/en/dev/howto/custom-management-commands/
 
 import logging
 from django.core.management.base import BaseCommand
-from optparse import make_option
 from django.template.defaultfilters import slugify
 from organisms.models import Organism
 
@@ -25,19 +24,26 @@ logger.addHandler(logging.NullHandler())
 
 
 class Command(BaseCommand):
-    # "option_list" sets up the command-line options so that the user can enter
-    # the organism attributes.
-    option_list = BaseCommand.option_list + (
-        make_option(
-            '--taxonomy_id', action='store', dest='taxonomy_id',
-            help="Organism Taxonomy ID supplied by NCBI"),
-        make_option(
-            '--common_name', action='store', dest='common_name',
-            help="Organism common name, e.g. 'Human'"),
-        make_option(
-            '--scientific_name', action='store', dest='scientific_name',
-            help="Organism scientific/binomial name, e.g. 'Homo sapiens'"),
-    )
+    def add_arguments(self, parser):
+        parser.add_argument(
+            '--taxonomy_id',
+            type=int,
+            dest='taxonomy_id'
+        )
+
+        parser.add_argument(
+            '--common_name',
+            type=str,
+            dest='common_name',
+            help="Organism common name, e.g. 'Human'"
+        )
+
+        parser.add_argument(
+            '--scientific_name',
+            type=str,
+            dest='scientific_name',
+            help="Organism scientific/binomial name, e.g. 'Homo sapiens'"
+        )
 
     help = 'Adds a new organism into the database. Fields needed are: '\
            'taxonomy_id, common_name, and scientific_name.'
