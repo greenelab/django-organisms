@@ -1,5 +1,4 @@
-"""
-This custom management command serves to add an organism to the database using
+"""This custom management command serves to add an organism to the database using
 a standalone script entered in a command line.  The fields it fills out are the
 fields specified in the Organism model (see organisms/models.py), which is the
 blueprint for what information the "organism" will contain in the database.
@@ -28,19 +27,20 @@ class Command(BaseCommand):
         parser.add_argument(
             '--taxonomy_id',
             type=int,
+            required=True,
             dest='taxonomy_id'
         )
 
         parser.add_argument(
             '--common_name',
-            type=str,
+            required=True,
             dest='common_name',
             help="Organism common name, e.g. 'Human'"
         )
 
         parser.add_argument(
             '--scientific_name',
-            type=str,
+            required=True,
             dest='scientific_name',
             help="Organism scientific/binomial name, e.g. 'Homo sapiens'"
         )
@@ -49,23 +49,25 @@ class Command(BaseCommand):
            'taxonomy_id, common_name, and scientific_name.'
 
     def handle(self, *args, **options):
-        """
-        This function is called by the Django API to specify how this object
+        """This function is called by the Django API to specify how this object
         will be saved to the database.
         """
-        taxonomy_id = options.get('taxonomy_id', None)
-        common_name = options.get('common_name', None)
-        scientific_name = options.get('scientific_name', None)
+        taxonomy_id = options['taxonomy_id']
 
-        # A 'slug' is a label for an object in django, which only contains
-        # letters, numbers, underscores, and hyphens, thus making it URL-
-        # usable.  The slugify method in django takes any string and converts
-        # it to this format.  For more information, see:
-        # http://stackoverflow.com/questions/427102/what-is-a-slug-in-django
-        slug = slugify(scientific_name)
-        logger.info("Slug generated: %s", slug)
+        # Remove leading and trailing blank characters in "common_name"
+        # and "scientific_name
+        common_name = options['common_name'].strip()
+        scientific_name = options['scientific_name'].strip()
 
-        if taxonomy_id and common_name and scientific_name:
+        if common_name and scientific_name:
+            # A 'slug' is a label for an object in django, which only contains
+            # letters, numbers, underscores, and hyphens, thus making it URL-
+            # usable.  The slugify method in django takes any string and
+            # converts it to this format.  For more information, see:
+            # http://stackoverflow.com/questions/427102/what-is-a-slug-in-django
+            slug = slugify(scientific_name)
+            logger.info("Slug generated: %s", slug)
+
             # If organism exists, update with passed parameters
             try:
                 org = Organism.objects.get(taxonomy_id=taxonomy_id)
@@ -77,14 +79,13 @@ class Command(BaseCommand):
             except Organism.DoesNotExist:
                 org = Organism(taxonomy_id=taxonomy_id,
                                common_name=common_name,
-                               scientific_name=scientific_name, slug=slug)
+                               scientific_name=scientific_name,
+                               slug=slug
+                )
             org.save()  # Save to the database.
         else:
-            # Returns an error if the user did not fill out all fields.
-            print("Couldn't add " + str(common_name) + ", scientific_name: " +
-                  str(scientific_name) + ", with taxonomy_id " +
-                  str(taxonomy_id) + " and slug " + str(slug) +
-                  ". Check that all fields are filled correctly.")
-            logger.error("Couldn't add scientific_name, with taxonomy_id, and "
-                         "slug into the database. Check that all fields are "
-                         "filled correctly.")
+            # Report an error if the user did not fill out all fields.
+            logger.error(
+                "Failed to add or update organism. "
+                "Please check that all fields are filled correctly."
+            )
